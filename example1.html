@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="{CHARSET}">
+    <title></title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <!--绑定插入的文本内容-->
+    <div id="app">
+      {{ message }}
+    </div>
+
+    <!--绑定 DOM 元素属性 :将这个元素节点的 title 属性和 Vue 实例的 message 属性绑定到一起。-->
+    <div id="app-2">
+      <span v-bind:title="message">
+    Hover your mouse over me for a few seconds to see my dynamically bound title!
+  		</span>
+    </div>
+
+    <!--绑定 DOM 结构到数据-->
+    <div id="app-3">
+      <p v-if="seen">Now you see me</p>
+    </div>
+
+    <!--绑定数据到数组来渲染一个列表-->
+    <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">
+          {{ todo.text }}
+        </li>
+      </ol>
+    </div>
+    <!--用 v-on 指令绑定一个监听事件用于调用我们 Vue 实例中定义的方法-->
+    <div id="app-5">
+      <p>{{ message }}</p>
+      <button v-on:click="reverseMessage">Reverse Message</button>
+    </div>
+
+    <!--Vue 也提供了 v-model 指令，它使得在表单输入和应用状态中做双向数据绑定变得非常轻巧。-->
+    <div id="app-6">
+      <p>{{ message }}</p>
+      <input v-model="message">
+    </div>
+
+	<!--为每个 todo 渲染文本,并将数据从父作用域传到子组件-->
+    <div id="app-7">
+      <ol>
+        <!-- Now we provide each todo-item with the todo object    -->
+        <!-- it's representing, so that its content can be dynamic -->
+        <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+      </ol>
+    </div>
+  </body>
+  
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello dhjskahdjskd'
+        }
+      })
+
+      var app2 = new Vue({
+        el: '#app-2',
+        data: {
+          message: 'You loaded this page on' + new Date()
+        }
+      })
+
+      var app3 = new Vue({
+          el: '#app-3',
+          data: {
+            seen: true
+          }
+        })
+        //  继续在控制台设置 app3.seen = false，你会发现 “Now you see me” 消失了。
+
+      var app4 = new Vue({
+          el: '#app-4',
+          data: {
+            todos: [{
+              text: 'Learn Javascript'
+            }, {
+              text: 'Learn Vue'
+            }, {
+              text: 'Build something awesome'
+            }]
+          }
+        })
+        //    在控制台里，输入 app4.todos.push({ text: 'New item' })。你会发现列表中多了一栏新内容。
+
+      var app5 = new Vue({
+        el: '#app-5',
+        data: {
+          message: 'Hello Vue.js!'
+        },
+        methods: {
+          reverseMessage: function() {
+            this.message = this.message.split('').reverse().join('')
+          }
+        }
+      })
+
+      var app6 = new Vue({
+        el: '#app-6',
+        data: {
+          message: 'Hello Vue!'
+        }
+      })
+      
+    Vue.component('todo-item',{ //新建一个vue组件
+      	props:['todo'], //props道具
+      	template:'<li>{{ todo.text }}</li>'//设置模板
+      })
+    
+    var app7 = new Vue({
+    	el:'#app-7',
+    	data:{
+    		groceryList: [
+    			{text:'Vegetables'},
+    			{text:'Cheese'},
+    			{text:'Whatever else humans are supposed to eat'}
+    		]
+    	}
+    })
+    </script>
+
+</html>
